@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Suspect - Police Management System{% endblock %}
+
+{% block nav_suspects %}active{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header">
+        <h2><i class="fas fa-edit mr-2"></i>Edit Suspect Profile</h2>
+    </div>
+    <div class="content-card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ suspect.FirstName }}" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ suspect.LastName }}" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" name="dob" value="{{ suspect.DateOfBirth|date:'Y-m-d' }}" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="Male" {% if suspect.Gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if suspect.Gender == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if suspect.Gender == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" value="{{ suspect.Address }}" required>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" class="form-control" id="contact" name="contact" value="{{ suspect.ContactNumber }}">
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="case_id">Associated Case</label>
+                        <select class="form-control" id="case_id" name="case_id" required>
+                            <option value="">Select a case</option>
+                            {% for case in cases %}
+                            <option value="{{ case.CaseID }}" {% if case.CaseID == suspect.CaseID %}selected{% endif %}>{{ case.CaseNumber }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="physical_description">Physical Description</label>
+                <textarea class="form-control" id="physical_description" name="physical_description" rows="3">{{ suspect.PhysicalDescription }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea class="form-control" id="notes" name="notes" rows="2">{{ suspect.Notes }}</textarea>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Update Suspect</button>
+                <a href="{{ url_for('suspects') }}" class="btn btn-secondary ml-2"><i class="fas fa-arrow-left mr-1"></i> Back to Suspects</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5><i class="fas fa-history mr-2"></i>Case History</h5>
+            </div>
+            <div class="content-card-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-primary"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">Added to Case #{{ suspect.CaseID }}</h6>
+                            <div class="text-muted small">Added by Officer Smith on 2023-05-15</div>
+                            <p class="mt-2">Initial suspect identified based on eyewitness testimony.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-info"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">Interviewed</h6>
+                            <div class="text-muted small">Conducted by Det. Johnson on 2023-05-17</div>
+                            <p class="mt-2">Suspect claimed to be at work during the incident. Alibi pending verification.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker bg-warning"></div>
+                        <div class="timeline-content">
+                            <h6 class="mb-1">Profile Updated</h6>
+                            <div class="text-muted small">Updated by Sgt. Davis on 2023-05-20</div>
+                            <p class="mt-2">Added new contact information and additional notes from follow-up investigation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 25px;
+        border-left: 2px solid #e9ecef;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        left: -9px;
+        top: 0;
+    }
+    
+    .timeline-content {
+        padding-left: 15px;
+    }
+</style>
+{% endblock %}

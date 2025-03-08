@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Case - Police Management System{% endblock %}
+
+{% block nav_cases %}active{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-edit mr-2"></i>Edit Case</h2>
+        <span class="badge badge-{% if case.Status == 'Open' %}warning{% elif case.Status == 'Closed' %}secondary{% else %}success{% endif %} p-2">{{ case.Status }}</span>
+    </div>
+    <div class="content-card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="case_number">Case Number</label>
+                        <input type="text" class="form-control" id="case_number" name="case_number" value="{{ case.CaseNumber }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="Open" {% if case.Status == 'Open' %}selected{% endif %}>Open</option>
+                            <option value="In Progress" {% if case.Status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Pending" {% if case.Status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Closed" {% if case.Status == 'Closed' %}selected{% endif %}>Closed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ case.Title }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4" required>{{ case.Description }}</textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date_opened">Date Opened</label>
+                        <input type="date" class="form-control" id="date_opened" name="date_opened" value="{{ case.DateOpened|date:'Y-m-d' }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date_closed">Date Closed</label>
+                        <input type="date" class="form-control" id="date_closed" name="date_closed" value="{{ case.DateClosed|date:'Y-m-d' if case.DateClosed else '' }}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="lead_officer_id">Lead Officer</label>
+                        <select class="form-control" id="lead_officer_id" name="lead_officer_id" required>
+                            <option value="">Select Lead Officer</option>
+                            {% for officer in officers %}
+                            <option value="{{ officer.OfficerID }}" {% if officer.OfficerID == case.LeadOfficerID %}selected{% endif %}>
+                                {{ officer.FirstName }} {{ officer.LastName }} ({{ officer.BadgeNumber }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select class="form-control" id="priority" name="priority">
+                            <option value="High" {% if case.Priority == 'High' %}selected{% endif %}>High</option>
+                            <option value="Medium" {% if case.Priority == 'Medium' %}selected{% endif %}>Medium</option>
+                            <option value="Low" {% if case.Priority == 'Low' %}selected{% endif %}>Low</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Incident Location</label>
+                <input type="text" class="form-control" id="location" name="location" value="{{ case.Location }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Case Notes</label>
+                <textarea class="form-control" id="notes" name="notes" rows="3">{{ case.Notes }}</textarea>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Update Case</button>
+                <a href="{{ url_for('cases') }}" class="btn btn-secondary ml-2"><i class="fas fa-arrow-left mr-1"></i> Back to Cases</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="content-card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-user-secret mr-2"></i>Related Suspects</h5>
+                <a href="{{ url_for('add_suspect') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus mr-1"></i> Add Suspect</a>
+            </div>
+            <div class="content-card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>DOB</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for suspect in suspects %}
+                            <tr>
+                                <td>{{ suspect.FirstName }} {{ suspect.LastName }}</td>
+                                <td>{{ suspect.DateOfBirth }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% if not suspects %}
+                            <tr>
+                                <td colspan="3" class="text-center">No suspects linked to this case.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="content-card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-fingerprint mr-2"></i>Related Evidence</h5>
+                <a href="{{ url_for('add_evidence') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus mr-1"></i> Add Evidence</a>
+            </div>
+            <div class="content-card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Date Collected</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in evidence %}
+                            <tr>
+                                <td>{{ item.Description }}</td>
+                                <td>{{ item.DateCollected }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ url_for('edit_evidence', evidence_id=item.EvidenceID) }}" class="btn btn-outline-success"><i class="fas fa-edit"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% if not evidence %}
+                            <tr>
+                                <td colspan="3" class="text-center">No evidence linked to this case.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

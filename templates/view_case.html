@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}Case Details - Police Management System{% endblock %}
+
+{% block nav_cases %}active{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header d-flex justify-content-between align-items-center">
+        <div>
+            <h2><i class="fas fa-folder-open mr-2"></i>Case #{{ case.CaseNumber }}</h2>
+            <div class="text-muted">{{ case.Title }}</div>
+        </div>
+        <div>
+            <span class="badge badge-{% if case.Status == 'Open' %}warning{% elif case.Status == 'Closed' %}secondary{% else %}success{% endif %} p-2 mr-2">{{ case.Status }}</span>
+            <div class="btn-group">
+                {% if session['role'] in ['AdminRole225', 'InvestigatorRole225'] %}
+                <a href="{{ url_for('edit_case', case_id=case.CaseID) }}" class="btn btn-primary">
+                    <i class="fas fa-edit mr-1"></i> Edit
+                </a>
+                {% endif %}
+                <a href="{{ url_for('cases') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-1"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="content-card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Case Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-muted">Description</h6>
+                        <p>{{ case.Description }}</p>
+                        
+                        <hr>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Date Opened</h6>
+                                    <p>{{ case.DateOpened }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Date Closed</h6>
+                                    <p>{{ case.DateClosed if case.DateClosed else 'N/A' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Lead Officer</h6>
+                                    <p>{{ case.LeadOfficer }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <h6 class="text-muted">Priority</h6>
+                                    <p>
+                                        <span class="badge badge-{% if case.Priority == 'High' %}danger{% elif case.Priority == 'Medium' %}warning{% else %}success{% endif %}">
+                                            {{ case.Priority }}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6 class="text-muted">Location</h6>
+                            <p>{{ case.Location }}</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6 class="text-muted">Notes</h6>
+                            <p>{{ case.Notes }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Case Timeline</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">Case Opened</h6>
+                                    <small>{{ case.DateOpened }}</small>
+                                </div>
+                                <p class="mb-1">Case opened and assigned to {{ case.LeadOfficer }}.</p>
+                                <small class="text-muted">Created by: System</small>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">Initial Interview Conducted</h6>
+                                    <small>2023-05-02</small>
+                                </div>
+                                <p class="mb-1">Interviewed witness at the scene.</p>
+                                <small class="text-muted">Updated by: {{ case.LeadOfficer }}</small>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">Evidence Collected</h6>
+                                    <small>2023-05-03</small>
+                                </div>
+                                <p class="mb-1">Fingerprints and blood samples collected from scene.</p>
+                                <small class="text-muted">Updated by: Officer Johnson</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Related Suspects</h5>
+                        {% if session['role'] in ['AdminRole225', 'InvestigatorRole225'] %}
+                        <a href="{{ url_for('add_suspect') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            {% for suspect in suspects %}
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-3">
+                                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                            {{ suspect.FirstName[0] }}{{ suspect.LastName[0] }}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ suspect.FirstName }} {{ suspect.LastName }}</h6>
+                                        <small class="text-muted">DOB: {{ suspect.DateOfBirth }}</small>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% if not suspects %}
+                            <li class="list-group-item text-center text-muted">No suspects linked to this case.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Evidence</h5>
+                        {% if session['role'] in ['AdminRole225', 'InvestigatorRole225'] %}
+                        <a href="{{ url_for('add_evidence') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            {% for item in evidence %}
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ item.Description }}</h6>
+                                    <small>{{ item.DateCollected }}</small>
+                                </div>
+                                <p class="mb-1">Location: {{ item.LocationCollected }}</p>
+                                <small class="text-muted">Custodian: {{ item.CustodianOfficer }}</small>
+                            </li>
+                            {% endfor %}
+                            {% if not evidence %}
+                            <li class="list-group-item text-center text-muted">No evidence linked to this case.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Case Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6 class="text-muted">Case Age</h6>
+                            <h4>{{ case_age }} days</h4>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-muted">Evidence Items</h6>
+                            <h4>{{ evidence|length }}</h4>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-muted">Suspects</h6>
+                            <h4>{{ suspects|length }}</h4>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="text-muted">Last Update</h6>
+                            <h4>{{ case.LastUpdated }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

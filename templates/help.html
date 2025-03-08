@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+
+{% block title %}Help & Documentation - Police Management System{% endblock %}
+
+{% block content %}
+<div class="content-card mb-4">
+    <div class="content-card-header">
+        <h2><i class="fas fa-question-circle mr-2"></i>Help & Documentation</h2>
+    </div>
+    <div class="content-card-body">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-overview-tab" data-toggle="pill" href="#v-pills-overview" role="tab" aria-controls="v-pills-overview" aria-selected="true">
+                        <i class="fas fa-home mr-2"></i>System Overview
+                    </a>
+                    <a class="nav-link" id="v-pills-cases-tab" data-toggle="pill" href="#v-pills-cases" role="tab" aria-controls="v-pills-cases" aria-selected="false">
+                        <i class="fas fa-folder mr-2"></i>Case Management
+                    </a>
+                    <a class="nav-link" id="v-pills-evidence-tab" data-toggle="pill" href="#v-pills-evidence" role="tab" aria-controls="v-pills-evidence" aria-selected="false">
+                        <i class="fas fa-fingerprint mr-2"></i>Evidence Handling
+                    </a>
+                    <a class="nav-link" id="v-pills-suspects-tab" data-toggle="pill" href="#v-pills-suspects" role="tab" aria-controls="v-pills-suspects" aria-selected="false">
+                        <i class="fas fa-user-secret mr-2"></i>Suspect Records
+                    </a>
+                    <a class="nav-link" id="v-pills-officers-tab" data-toggle="pill" href="#v-pills-officers" role="tab" aria-controls="v-pills-officers" aria-selected="false">
+                        <i class="fas fa-user-shield mr-2"></i>Officer Management
+                    </a>
+                    <a class="nav-link" id="v-pills-reports-tab" data-toggle="pill" href="#v-pills-reports" role="tab" aria-controls="v-pills-reports" aria-selected="false">
+                        <i class="fas fa-chart-bar mr-2"></i>Reports & Analytics
+                    </a>
+                    <a class="nav-link" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
+                        <i class="fas fa-user-cog mr-2"></i>Account Settings
+                    </a>
+                    <a class="nav-link" id="v-pills-faq-tab" data-toggle="pill" href="#v-pills-faq" role="tab" aria-controls="v-pills-faq" aria-selected="false">
+                        <i class="fas fa-question mr-2"></i>FAQ
+                    </a>
+                    <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab" aria-controls="v-pills-contact" aria-selected="false">
+                        <i class="fas fa-envelope mr-2"></i>Contact Support
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <!-- System Overview -->
+                    <div class="tab-pane fade show active" id="v-pills-overview" role="tabpanel" aria-labelledby="v-pills-overview-tab">
+                        <h3>Police Management System Overview</h3>
+                        <p>The Police Management System (PMS) is a comprehensive web application designed for law enforcement agencies to securely manage cases, evidence, personnel data, and prisoner releases.</p>
+                        
+                        <h4 class="mt-4">Key Features</h4>
+                        <ul>
+                            <li><strong>Case Management:</strong> Create, track, and update case files</li>
+                            <li><strong>Evidence Tracking:</strong> Log and monitor physical and digital evidence</li>
+                            <li><strong>Officer Records:</strong> Maintain officer information and assignments</li>
+                            <li><strong>Suspect Database:</strong> Track suspect information linked to cases</li>
+                            <li><strong>Prisoner Release Management:</strong> Monitor upcoming and past prisoner releases</li>
+                            <li><strong>Analytics:</strong> Data visualization for insights and reporting</li>
+                        </ul>
+                        
+                        <h4 class="mt-4">User Roles</h4>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Role</th>
+                                        <th>Access Level</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Administrator</td>
+                                        <td>Full Access</td>
+                                        <td>Complete control over all system features and user management</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Investigator</td>
+                                        <td>Read/Write Access</td>
+                                        <td>Ability to create and modify cases, evidence, and suspects</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Public User</td>
+                                        <td>Read-only Access</td>
+                                        <td>Limited view of case information with no editing capabilities</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Case Management -->
+                    <div class="tab-pane fade" id="v-pills-cases" role="tabpanel" aria-labelledby="v-pills-cases-tab">
+                        <h3>Case Management</h3>
+                        <p>The Case Management module allows you to create, track, update, and close police cases.</p>
+                        
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">Creating a New Case</div>
+                            <div class="card-body">
+                                <ol>
+                                    <li>Navigate to <strong>Cases</strong> from the main navigation</li>
+                                    <li>Click the <strong>New Case</strong> button in the top right</li>
+                                    <li>Fill in all required fields in the form:</li>
+                                    <ul>
+                                        <li>Case Number (automatically generated but can be customized)</li>
+                                        <li>Title - brief description of the case</li>
+                                        <li>Description - detailed summary of the case</li>
+                                        <li>Lead Officer - assigned officer in charge</li>
+                                        <li>Priority - High/Medium/Low based on urgency</li>
+                                        <li>Other relevant details</li>
+                                    </ul>
+                                    <li>Click <strong>Add Case</strong> to create the case</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">Managing Existing Cases</div>
+                            <div class="card-body">
+                                <p>From the Cases page, you can:</p>
+                                <ul>
+                                    <li>View all cases in a sortable, searchable list</li>
+                                    <li>Filter cases by status, priority, date, or other criteria</li>
+                                    <li>Click on a case to view full details</li>
+                                    <li>Use the Edit button to modify case information</li>
+                                    <li>Update case status (Open, In Progress, Pending, Closed)</li>
+                                    <li>Add suspects and evidence to cases</li>
+                                </ul>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    <strong>Tip:</strong> Use the quick filters at the top of the Cases page to quickly find relevant cases.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Evidence Handling -->
+                    <div class="tab-pane fade" id="v-pills-evidence" role="tabpanel" aria-labelledby="v-pills-evidence-tab">
+                        <h3>Evidence Handling</h3>
+                        <p>The Evidence module allows for proper tracking and chain of custody documentation of all case-related evidence.</p>
+                        
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">Adding New Evidence</div>
+                            <div class="card-body">
+                                <ol>
+                                    <li>Navigate to <strong>Evidence</strong> from the main navigation</li>
+                                    <li>Click the <strong>Add New Evidence</strong> button</li>
+                                    <li>Select the associated case from the dropdown</li>
+                                    <li>Enter a detailed description of the evidence</li>
+                                    <li>Record the date and location where evidence was collected</li>
+                                    <li>Assign a custodian officer responsible for the evidence</li>
+                                    <li>Add any additional notes or information</li>
+                                    <li>Click <strong>Add Evidence</strong> to save</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <strong>Important:</strong> Always maintain proper chain of custody by documenting any transfer or handling of evidence.
+                        </div>
+                        
+                        <h4 class="mt-4">Chain of Custody</h4>
+                        <p>Whenever evidence changes hands or location:</p>
+                        <ol>
+                            <li>Find the evidence record in the system</li>
+                            <li>Click "Transfer Custody" button</li>
+                            <li>Select the new custodian officer</li>
+                            <li>Record the reason for transfer</li>
+                            <li>Submit the transfer record</li>
+                        </ol>
+                        
+                        <p>All transfers are logged and can be reviewed in the evidence history.</p>
+                    </div>
+                    
+                    <!-- Additional tabs (suspects, officers, etc.) would be filled in similarly -->
+                    <div class="tab-pane fade" id="v-pills-suspects" role="tabpanel" aria-labelledby="v-pills-suspects-tab">
+                        <h3>Suspect Records</h3>
+                        <p>Documentation for managing suspect information would be here.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="v-pills-officers" role="tabpanel" aria-labelledby="v-pills-officers-tab">
+                        <h3>Officer Management</h3>
+                        <p>Documentation for officer management would be here.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="v-pills-reports" role="tabpanel" aria-labelledby="v-pills-reports-tab">
+                        <h3>Reports & Analytics</h3>
+                        <p>Documentation for using the reporting tools would be here.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
+                        <h3>Account Settings</h3>
+                        <p>Documentation for managing user accounts and preferences would be here.</p>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="v-pills-faq" role="tabpanel" aria-labelledby="v-pills-faq-tab">
+                        <h3>Frequently Asked Questions</h3>
+                        <div class="accordion" id="faqAccordion">
+                            <div class="card">
+                                <div class="card-header" id="faqOne">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            How do I reset my password?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="faqOne" data-parent="#faqAccordion">
+                                    <div class="card-body">
+                                        You can reset your password by clicking on your profile in the top right corner, selecting "Settings" and then navigating to the "Security" tab. From there, click the "Change Password" button and follow the instructions.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="faqTwo">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Can I export case data?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="faqTwo" data-parent="#faqAccordion">
+                                    <div class="card-body">
+                                        Yes, you can export case data in several formats. Navigate to the Cases page, select the cases you want to export (or use filters to select a group), then click the "Export" button in the top right corner. You can choose PDF, Excel, or CSV format.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="faqThree">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            How do I add a new user to the system?
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="faqThree" data-parent="#faqAccordion">
+                                    <div class="card-body">
+                                        Only administrators can add new users. If you have admin privileges, go to Settings > User Management > Add New User. Fill in the required information and select the appropriate role for the new user. An email will be sent to them with login instructions.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
+                        <h3>Contact Support</h3>
+                        <p class="mb-4">If you need assistance with the Police Management System, please use one of the following contact methods:</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-headset mr-2"></i>Technical Support</h5>
+                                        <p class="card-text">For system issues, bugs, or technical questions</p>
+                                        <p class="card-text mb-1"><i class="fas fa-phone-alt mr-2"></i>(555) 123-4567</p>
+                                        <p class="card-text mb-1"><i class="fas fa-envelope mr-2"></i>support@pms-system.com</p>
+                                        <p class="card-text"><i class="fas fa-clock mr-2"></i>Available 24/7</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fas fa-user-cog mr-2"></i>Administrator</h5>
+                                        <p class="card-text">For account management, permissions, or policy questions</p>
+                                        <p class="card-text mb-1"><i class="fas fa-envelope mr-2"></i>admin@pms-system.com</p>
+                                        <p class="card-text"><i class="fas fa-clock mr-2"></i>Business hours: 8am-5pm, M-F</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Contact Form</h5>
+                                <p>Please fill out this form for non-urgent inquiries:</p>
+                                <form>
+                                    <div class="form-group">
+                                        <label for="contactName">Name</label>
+                                        <input type="text" class="form-control" id="contactName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactEmail">Email</label>
+                                        <input type="email" class="form-control" id="contactEmail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactSubject">Subject</label>
+                                        <input type="text" class="form-control" id="contactSubject" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactMessage">Message</label>
+                                        <textarea class="form-control" id="contactMessage" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+2025-03-08 07:46:59,375 - INFO - Database connection test successful
+2025-03-08 07:46:59,440 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-08 07:46:59,441 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-08 07:46:59,445 - INFO -  * Restarting with stat
+2025-03-08 07:47:00,103 - INFO - Database connection test successful
+2025-03-08 07:47:00,143 - WARNING -  * Debugger is active!
+2025-03-08 07:47:00,151 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 07:47:12,953 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:12] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 07:47:13,033 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:13] "GET /home HTTP/1.1" 200 -
+2025-03-08 07:47:16,958 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:16] "GET /login HTTP/1.1" 200 -
+2025-03-08 07:47:40,304 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:40] "[32mGET /home HTTP/1.1[0m" 302 -
+2025-03-08 07:47:40,322 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:40] "GET /login HTTP/1.1" 200 -
+2025-03-08 07:47:45,445 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:45] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 07:47:45,465 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:45] "GET /login HTTP/1.1" 200 -
+2025-03-08 07:47:50,554 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:50] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 07:47:50,568 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:50] "GET /login HTTP/1.1" 200 -
+2025-03-08 07:47:56,584 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:56] "[32mGET /home HTTP/1.1[0m" 302 -
+2025-03-08 07:47:56,608 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:56] "GET /login HTTP/1.1" 200 -
+2025-03-08 07:47:58,579 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 07:47:58,596 - INFO - 127.0.0.1 - - [08/Mar/2025 07:47:58] "POST /login HTTP/1.1" 200 -
+2025-03-08 07:48:00,386 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 07:48:00,389 - INFO - 127.0.0.1 - - [08/Mar/2025 07:48:00] "POST /login HTTP/1.1" 200 -
+2025-03-08 07:50:04,157 - INFO - 127.0.0.1 - - [08/Mar/2025 07:50:04] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 07:50:04,182 - INFO - 127.0.0.1 - - [08/Mar/2025 07:50:04] "GET /login HTTP/1.1" 200 -
+2025-03-08 07:51:42,121 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 07:51:42,205 - INFO -  * Restarting with stat
+2025-03-08 07:51:42,780 - INFO - Database connection test successful
+2025-03-08 07:51:42,821 - WARNING -  * Debugger is active!
+2025-03-08 07:51:42,829 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:37:57,515 - INFO - 127.0.0.1 - - [08/Mar/2025 11:37:57] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:38:00,175 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:38:00,182 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:00] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:38:02,915 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:38:02,920 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:02] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:38:27,690 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:38:27,732 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:27] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:38:37,951 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:38:38,587 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:38] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:38:47,250 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:38:47,260 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:47] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:38:49,237 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:49] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:38:50,966 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:50] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:38:52,533 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:38:52,536 - INFO - 127.0.0.1 - - [08/Mar/2025 11:38:52] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:39:02,814 - INFO - 127.0.0.1 - - [08/Mar/2025 11:39:02] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 11:39:02,830 - INFO - 127.0.0.1 - - [08/Mar/2025 11:39:02] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:39:08,984 - INFO - 127.0.0.1 - - [08/Mar/2025 11:39:08] "[33mGET /index HTTP/1.1[0m" 404 -
+2025-03-08 11:39:13,666 - INFO - 127.0.0.1 - - [08/Mar/2025 11:39:13] "[32mGET /home HTTP/1.1[0m" 302 -
+2025-03-08 11:39:13,696 - INFO - 127.0.0.1 - - [08/Mar/2025 11:39:13] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:42:23,114 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:42:23,217 - INFO -  * Restarting with stat
+2025-03-08 11:42:23,882 - INFO - Database connection test successful
+2025-03-08 11:42:23,938 - WARNING -  * Debugger is active!
+2025-03-08 11:42:23,945 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:42:36,082 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:42:36,164 - INFO -  * Restarting with stat
+2025-03-08 11:42:36,978 - INFO - Database connection test successful
+2025-03-08 11:42:37,043 - WARNING -  * Debugger is active!
+2025-03-08 11:42:37,051 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:42:40,881 - INFO - 127.0.0.1 - - [08/Mar/2025 11:42:40] "GET / HTTP/1.1" 200 -
+2025-03-08 11:42:41,194 - INFO - 127.0.0.1 - - [08/Mar/2025 11:42:41] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:42:45,201 - INFO - 127.0.0.1 - - [08/Mar/2025 11:42:45] "GET / HTTP/1.1" 200 -
+2025-03-08 11:42:45,325 - INFO - 127.0.0.1 - - [08/Mar/2025 11:42:45] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:43:05,401 - INFO - Database connection test successful
+2025-03-08 11:43:05,465 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-08 11:43:05,466 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-08 11:43:05,469 - INFO -  * Restarting with stat
+2025-03-08 11:43:06,228 - INFO - Database connection test successful
+2025-03-08 11:43:06,267 - WARNING -  * Debugger is active!
+2025-03-08 11:43:06,274 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:44:57,967 - INFO - Database connection test successful
+2025-03-08 11:44:58,034 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-03-08 11:44:58,036 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-08 11:44:58,040 - INFO -  * Restarting with stat
+2025-03-08 11:44:58,608 - INFO - Database connection test successful
+2025-03-08 11:44:58,658 - WARNING -  * Debugger is active!
+2025-03-08 11:44:58,667 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:45:08,058 - INFO - 127.0.0.1 - - [08/Mar/2025 11:45:08] "GET / HTTP/1.1" 200 -
+2025-03-08 11:45:08,339 - INFO - 127.0.0.1 - - [08/Mar/2025 11:45:08] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:45:11,828 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:45:11,831 - INFO - 127.0.0.1 - - [08/Mar/2025 11:45:11] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:46:26,530 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:46:26,534 - INFO - 127.0.0.1 - - [08/Mar/2025 11:46:26] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:46:28,155 - DEBUG - Login query: SELECT UserID FROM Users225 WHERE Username = ?
+2025-03-08 11:46:28,157 - INFO - 127.0.0.1 - - [08/Mar/2025 11:46:28] "POST /login HTTP/1.1" 200 -
+2025-03-08 11:49:07,184 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:49:07,262 - INFO -  * Restarting with stat
+2025-03-08 11:49:07,792 - INFO - Database connection test successful
+2025-03-08 11:49:07,837 - WARNING -  * Debugger is active!
+2025-03-08 11:49:07,843 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:49:32,025 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:49:32,107 - INFO -  * Restarting with stat
+2025-03-08 11:49:35,093 - INFO - Database connection test successful
+2025-03-08 11:49:35,200 - WARNING -  * Debugger is active!
+2025-03-08 11:49:35,207 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:49:49,413 - INFO - 127.0.0.1 - - [08/Mar/2025 11:49:49] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 11:49:49,795 - INFO - 127.0.0.1 - - [08/Mar/2025 11:49:49] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:51:11,306 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:51:11,399 - INFO -  * Restarting with stat
+2025-03-08 11:51:11,933 - INFO - Database connection test successful
+2025-03-08 11:51:11,978 - WARNING -  * Debugger is active!
+2025-03-08 11:51:11,984 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:51:19,072 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:51:19,255 - INFO -  * Restarting with stat
+2025-03-08 11:51:19,801 - INFO - Database connection test successful
+2025-03-08 11:51:19,853 - WARNING -  * Debugger is active!
+2025-03-08 11:51:19,859 - INFO -  * Debugger PIN: 318-619-736
+2025-03-08 11:51:32,511 - INFO - 127.0.0.1 - - [08/Mar/2025 11:51:32] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-08 11:51:32,588 - INFO - 127.0.0.1 - - [08/Mar/2025 11:51:32] "GET /login HTTP/1.1" 200 -
+2025-03-08 11:52:04,328 - INFO -  * Detected change in 'C:\\Users\\donko\\Music\\POLICE\\app.py', reloading
+2025-03-08 11:52:04,505 - INFO -  * Restarting with stat

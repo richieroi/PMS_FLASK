@@ -4,24 +4,103 @@
 
 {% block nav_reports %}active{% endblock %}
 
+{% block extra_css %}
+<style>
+    .stats-overview {
+        background: linear-gradient(135deg, #0A2342 0%, #1D3461 100%);
+        border-radius: 10px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        color: #fff;
+    }
+    
+    .stats-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stats-subtitle {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stats-card {
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .border-left-primary {
+        border-left: 4px solid var(--police-accent);
+    }
+    
+    .border-left-success {
+        border-left: 4px solid var(--police-highlight);
+    }
+    
+    .border-left-warning {
+        border-left: 4px solid var(--police-warning);
+    }
+    
+    .border-left-info {
+        border-left: 4px solid #36b9cc;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 350px;
+    }
+    
+    /* Animated number counters */
+    .counter-animation {
+        animation: countUp 2s ease-out;
+    }
+    
+    @keyframes countUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(12, 107, 161, 0.05);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="fas fa-chart-bar mr-2"></i>Department Statistics</h2>
-    <div>
-        <button class="btn btn-primary">
-            <i class="fas fa-download mr-2"></i>Export Report
-        </button>
+<div class="stats-overview">
+    <div class="stats-title">Department Statistics</div>
+    <div class="stats-subtitle">Comprehensive overview of departmental activities and metrics</div>
+    
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="text-white mb-0">{{ total_cases }} Total Cases</h5>
+            <small class="text-white-50" id="current-time">Last updated: Today</small>
+        </div>
+        <div>
+            <button class="btn btn-light" id="refreshStats">
+                <i class="fas fa-sync-alt mr-1"></i> Refresh
+            </button>
+            <button class="btn btn-outline-light ml-2" data-toggle="modal" data-target="#exportModal">
+                <i class="fas fa-download mr-1"></i> Export Report
+            </button>
+        </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100 py-2 stats-card">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_cases }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter-animation">{{ total_cases }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-folder fa-2x text-gray-300"></i>
@@ -32,12 +111,12 @@
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-success shadow h-100 py-2 stats-card">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Closed Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ closed_cases }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter-animation">{{ closed_cases }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-check-circle fa-2x text-gray-300"></i>
@@ -48,12 +127,12 @@
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-warning shadow h-100 py-2 stats-card">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Open Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_cases }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800 counter-animation">{{ open_cases }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-clock fa-2x text-gray-300"></i>
@@ -64,7 +143,7 @@
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card border-left-info shadow h-100 py-2 stats-card">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -77,8 +156,8 @@
                             </div>
                             <div class="col">
                                 <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" 
-                                        style="width: {{ (closed_cases / total_cases * 100)|round|int if total_cases > 0 else 0 }}%"></div>
+                                    <div class="progress-bar bg-info progress-animation" role="progressbar" 
+                                        style="width: 0%" data-width="{{ (closed_cases / total_cases * 100)|round|int if total_cases > 0 else 0 }}%"></div>
                                 </div>
                             </div>
                         </div>
@@ -97,9 +176,21 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Case Types Distribution</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Chart Options:</div>
+                        <a class="dropdown-item" href="#" id="viewAsDoughnut">View as Doughnut</a>
+                        <a class="dropdown-item" href="#" id="viewAsBar">View as Bar Chart</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" id="downloadChart">Download Chart</a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
-                <div class="chart-pie pt-4 pb-2">
+                <div class="chart-container">
                     <canvas id="caseTypePieChart"></canvas>
                 </div>
             </div>
@@ -114,15 +205,31 @@
             <div class="card-body">
                 <div class="mb-4">
                     <h4 class="small font-weight-bold">Officers <span class="float-right">{{ total_officers }}</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-primary progress-animation" role="progressbar" style="width: 0%" 
+                             data-width="100%"></div>
+                    </div>
                 </div>
                 <div class="mb-4">
                     <h4 class="small font-weight-bold">Suspects <span class="float-right">{{ total_suspects }}</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning progress-animation" role="progressbar" style="width: 0%" 
+                             data-width="100%"></div>
+                    </div>
                 </div>
                 <div class="mb-4">
                     <h4 class="small font-weight-bold">Evidence Items <span class="float-right">{{ total_evidence }}</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info progress-animation" role="progressbar" style="width: 0%" 
+                             data-width="100%"></div>
+                    </div>
                 </div>
                 <div class="mb-4">
                     <h4 class="small font-weight-bold">Cases per Officer <span class="float-right">{{ (total_cases / total_officers)|round(1) if total_officers > 0 else 0 }}</span></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success progress-animation" role="progressbar" style="width: 0%" 
+                             data-width="{{ (total_cases / total_officers / 5 * 100)|round|int if total_officers > 0 else 0 }}%"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,12 +239,20 @@
 <div class="row">
     <div class="col-12">
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Case Distribution by Type</h6>
+                <div class="form-inline">
+                    <input type="text" class="form-control form-control-sm mr-2" placeholder="Search..." id="tableSearch">
+                    <select class="form-control form-control-sm" id="sortTable">
+                        <option value="name">Sort by Type</option>
+                        <option value="count">Sort by Count</option>
+                        <option value="percent">Sort by Percentage</option>
+                    </select>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Case Type</th>
@@ -154,7 +269,8 @@
                                 <td>{{ (case_type.Count / total_cases * 100)|round|int }}%</td>
                                 <td>
                                     <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: {{ (case_type.Count / total_cases * 100)|round|int }}%"
+                                        <div class="progress-bar progress-animation" role="progressbar" style="width: 0%"
+                                            data-width="{{ (case_type.Count / total_cases * 100)|round|int }}%"
                                             aria-valuenow="{{ (case_type.Count / total_cases * 100)|round|int }}" aria-valuemin="0" aria-valuemax="100">
                                         </div>
                                     </div>
@@ -168,53 +284,321 @@
         </div>
     </div>
 </div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel">Export Statistics Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exportFormat">Select Format</label>
+                    <select class="form-control" id="exportFormat">
+                        <option value="pdf">PDF Document</option>
+                        <option value="excel">Excel Spreadsheet</option>
+                        <option value="csv">CSV File</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateRange">Date Range</label>
+                    <select class="form-control" id="dateRange">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month" selected>This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div class="form-group" id="customDateRangeGroup" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="endDate">End Date</label>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="generateReport">Generate Report</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
     // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontFamily = 'Roboto', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#858796';
 
-    // Pie Chart
-    var ctx = document.getElementById("caseTypePieChart");
-    var caseTypePieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                {% for case_type in case_types %}
-                "{{ case_type.CaseType }}",
-                {% endfor %}
-            ],
-            datasets: [{
-                data: [
+    // Initialize charts when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Display current time
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = `Today at ${hours}:${minutes}`;
+        }
+        
+        // Set initial time and update every minute
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 60000);
+        
+        // Initialize animations for progress bars
+        setTimeout(function() {
+            document.querySelectorAll('.progress-animation').forEach(function(progressBar) {
+                var width = progressBar.getAttribute('data-width');
+                progressBar.style.width = width;
+                progressBar.style.transition = 'width 1s ease-in-out';
+            });
+        }, 300);
+        
+        // Pie Chart
+        var ctx = document.getElementById("caseTypePieChart");
+        var caseTypePieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [
                     {% for case_type in case_types %}
-                    {{ case_type.Count }},
+                    "{{ case_type.CaseType }}",
                     {% endfor %}
                 ],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796', '#5a5c69'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#60616f', '#373840'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
+                datasets: [{
+                    data: [
+                        {% for case_type in case_types %}
+                        {{ case_type.Count }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796', '#5a5c69'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#60616f', '#373840'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
             },
-            legend: {
-                display: true,
-                position: 'bottom'
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                },
+                cutoutPercentage: 65,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 2000
+                }
             },
-            cutoutPercentage: 65,
-        },
+        });
+        
+        // View as bar chart
+        document.getElementById('viewAsBar').addEventListener('click', function(e) {
+            e.preventDefault();
+            caseTypePieChart.destroy();
+            
+            caseTypePieChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        {% for case_type in case_types %}
+                        "{{ case_type.CaseType }}",
+                        {% endfor %}
+                    ],
+                    datasets: [{
+                        label: 'Cases',
+                        data: [
+                            {% for case_type in case_types %}
+                            {{ case_type.Count }},
+                            {% endfor %}
+                        ],
+                        backgroundColor: '#4e73df',
+                        borderColor: '#4e73df',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                precision: 0
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    },
+                    animation: {
+                        duration: 1500
+                    }
+                }
+            });
+        });
+        
+        // View as doughnut chart
+        document.getElementById('viewAsDoughnut').addEventListener('click', function(e) {
+            e.preventDefault();
+            caseTypePieChart.destroy();
+            
+            caseTypePieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        {% for case_type in case_types %}
+                        "{{ case_type.CaseType }}",
+                        {% endfor %}
+                    ],
+                    datasets: [{
+                        data: [
+                            {% for case_type in case_types %}
+                            {{ case_type.Count }},
+                            {% endfor %}
+                        ],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796', '#5a5c69'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#60616f', '#373840'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    cutoutPercentage: 65,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 1500
+                    }
+                },
+            });
+        });
+        
+        // Download chart functionality
+        document.getElementById('downloadChart').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Create a temporary link
+            var link = document.createElement('a');
+            link.download = 'case-types-chart.png';
+            link.href = caseTypePieChart.toBase64Image();
+            link.click();
+        });
+        
+        // Custom date range visibility toggle
+        document.getElementById('dateRange').addEventListener('change', function() {
+            document.getElementById('customDateRangeGroup').style.display = 
+                this.value === 'custom' ? 'block' : 'none';
+        });
+        
+        // Refresh stats
+        document.getElementById('refreshStats').addEventListener('click', function() {
+            // Add spinner to the button
+            var originalHtml = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+            this.disabled = true;
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                this.innerHTML = originalHtml;
+                this.disabled = false;
+                
+                // Show toast notification
+                alert('Statistics refreshed successfully!');
+                // In real implementation, you would reload the page or update via AJAX
+            }, 1500);
+        });
+        
+        // Export report functionality
+        document.getElementById('generateReport').addEventListener('click', function() {
+            var format = document.getElementById('exportFormat').value;
+            var dateRange = document.getElementById('dateRange').value;
+            
+            // Show success message (in real implementation, this would generate and download the report)
+            alert(`Report is being generated in ${format.toUpperCase()} format. It will download automatically when ready.`);
+            $('#exportModal').modal('hide');
+        });
+        
+        // Table search functionality
+        document.getElementById('tableSearch').addEventListener('keyup', function() {
+            var value = this.value.toLowerCase();
+            var table = document.getElementById('dataTable');
+            var rows = table.getElementsByTagName('tr');
+            
+            for (var i = 1; i < rows.length; i++) {
+                var text = rows[i].textContent.toLowerCase();
+                rows[i].style.display = text.indexOf(value) > -1 ? '' : 'none';
+            }
+        });
+        
+        // Table sort functionality
+        document.getElementById('sortTable').addEventListener('change', function() {
+            var table = document.getElementById('dataTable');
+            var tbody = table.querySelector('tbody');
+            var rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.sort(function(a, b) {
+                var sortBy = document.getElementById('sortTable').value;
+                var aValue, bValue;
+                
+                switch(sortBy) {
+                    case 'name':
+                        aValue = a.cells[0].textContent;
+                        bValue = b.cells[0].textContent;
+                        return aValue.localeCompare(bValue);
+                    case 'count':
+                        aValue = parseInt(a.cells[1].textContent);
+                        bValue = parseInt(b.cells[1].textContent);
+                        return bValue - aValue;
+                    case 'percent':
+                        aValue = parseInt(a.cells[2].textContent);
+                        bValue = parseInt(b.cells[2].textContent);
+                        return bValue - aValue;
+                }
+            });
+            
+            // Remove existing rows
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+            
+            // Append sorted rows
+            rows.forEach(function(row) {
+                tbody.appendChild(row);
+            });
+        });
     });
 </script>
 {% endblock %}

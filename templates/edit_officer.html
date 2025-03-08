@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Officer - Police Management System{% endblock %}
+
+{% block nav_officers %}active{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header">
+        <h2><i class="fas fa-edit mr-2"></i>Edit Officer</h2>
+    </div>
+    <div class="content-card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ officer.FirstName }}" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ officer.LastName }}" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="badge_number">Badge Number</label>
+                        <input type="text" class="form-control" id="badge_number" name="badge_number" value="{{ officer.BadgeNumber }}" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rank">Rank</label>
+                        <select class="form-control" id="rank" name="rank" required>
+                            <option value="Officer" {% if officer.Rank == 'Officer' %}selected{% endif %}>Officer</option>
+                            <option value="Detective" {% if officer.Rank == 'Detective' %}selected{% endif %}>Detective</option>
+                            <option value="Sergeant" {% if officer.Rank == 'Sergeant' %}selected{% endif %}>Sergeant</option>
+                            <option value="Lieutenant" {% if officer.Rank == 'Lieutenant' %}selected{% endif %}>Lieutenant</option>
+                            <option value="Captain" {% if officer.Rank == 'Captain' %}selected{% endif %}>Captain</option>
+                            <option value="Chief" {% if officer.Rank == 'Chief' %}selected{% endif %}>Chief</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="precinct">Precinct</label>
+                        <input type="text" class="form-control" id="precinct" name="precinct" value="{{ officer.Precinct }}" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phone">Contact Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ officer.Phone }}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ officer.Email }}">
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="hire_date">Hire Date</label>
+                        <input type="date" class="form-control" id="hire_date" name="hire_date" value="{{ officer.HireDate|date:'Y-m-d' }}">
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="Active" {% if officer.Status == 'Active' %}selected{% endif %}>Active</option>
+                            <option value="On Leave" {% if officer.Status == 'On Leave' %}selected{% endif %}>On Leave</option>
+                            <option value="Suspended" {% if officer.Status == 'Suspended' %}selected{% endif %}>Suspended</option>
+                            <option value="Retired" {% if officer.Status == 'Retired' %}selected{% endif %}>Retired</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea class="form-control" id="notes" name="notes" rows="2">{{ officer.Notes }}</textarea>
+            </div>
+            
+            {% if session['role'] == 'AdminRole225' %}
+            <div class="form-group">
+                <label for="user_role">System Role</label>
+                <select class="form-control" id="user_role" name="user_role">
+                    <option value="AdminRole225" {% if officer.UserRole == 'AdminRole225' %}selected{% endif %}>Administrator</option>
+                    <option value="InvestigatorRole225" {% if officer.UserRole == 'InvestigatorRole225' %}selected{% endif %}>Investigator</option>
+                    <option value="PublicUserRole225" {% if officer.UserRole == 'PublicUserRole225' %}selected{% endif %}>Public User</option>
+                </select>
+            </div>
+            {% endif %}
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Update Officer</button>
+                <a href="{{ url_for('officers') }}" class="btn btn-secondary ml-2"><i class="fas fa-arrow-left mr-1"></i> Back to Officers</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5><i class="fas fa-folder mr-2"></i>Assigned Cases</h5>
+            </div>
+            <div class="content-card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Case Number</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if officer_cases %}
+                                {% for case in officer_cases %}
+                                <tr>
+                                    <td>{{ case.CaseNumber }}</td>
+                                    <td>{{ case.Title }}</td>
+                                    <td>
+                                        <span class="badge badge-{% if case.Status == 'Open' %}warning{% elif case.Status == 'Closed' %}secondary{% else %}success{% endif %}">
+                                            {{ case.Status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('view_case', case_id=case.CaseID) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No cases assigned to this officer.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5><i class="fas fa-fingerprint mr-2"></i>Evidence Custodian</h5>
+            </div>
+            <div class="content-card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Case Number</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if officer_evidence %}
+                                {% for evidence in officer_evidence %}
+                                <tr>
+                                    <td>{{ evidence.Description }}</td>
+                                    <td>{{ evidence.CaseNumber }}</td>
+                                    <td>{{ evidence.DateCollected }}</td>
+                                    <td>
+                                        <a href="{{ url_for('edit_evidence', evidence_id=evidence.EvidenceID) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No evidence under this officer's custody.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

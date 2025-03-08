@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications - Police Management System{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-bell mr-2"></i>Notifications</h2>
+        <div>
+            <button class="btn btn-outline-secondary mr-2" id="markAllRead">
+                <i class="fas fa-check-double mr-1"></i> Mark All as Read
+            </button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#notificationSettingsModal">
+                <i class="fas fa-cog mr-1"></i> Settings
+            </button>
+        </div>
+    </div>
+    <div class="content-card-body">
+        <ul class="nav nav-tabs" id="notificationsTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">
+                    All <span class="badge badge-primary">7</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="unread-tab" data-toggle="tab" href="#unread" role="tab" aria-controls="unread" aria-selected="false">
+                    Unread <span class="badge badge-danger">3</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="cases-tab" data-toggle="tab" href="#cases" role="tab" aria-controls="cases" aria-selected="false">
+                    Cases
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="system-tab" data-toggle="tab" href="#system" role="tab" aria-controls="system" aria-selected="false">
+                    System
+                </a>
+            </li>
+        </ul>
+        
+        <div class="tab-content mt-3" id="notificationsTabContent">
+            <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-action unread">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 font-weight-bold">New Case Assigned</h6>
+                            <small>10 minutes ago</small>
+                        </div>
+                        <p class="mb-1">You have been assigned as lead officer on case #C-2023-008: Theft at Main Street Market.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-primary">Case Assignment</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">View Case</button>
+                                <button class="btn btn-sm btn-outline-secondary mark-read" data-id="1">Mark as Read</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group-item list-group-item-action unread">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 font-weight-bold">Case Status Updated</h6>
+                            <small>2 hours ago</small>
+                        </div>
+                        <p class="mb-1">Case #C-2023-004 has been updated to "In Progress" by Sgt. Johnson.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-info">Status Change</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">View Case</button>
+                                <button class="btn btn-sm btn-outline-secondary mark-read" data-id="2">Mark as Read</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group-item list-group-item-action unread">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1 font-weight-bold">New Evidence Added</h6>
+                            <small>Yesterday, 3:45 PM</small>
+                        </div>
+                        <p class="mb-1">Officer Smith added new evidence (Fingerprints) to case #C-2023-005.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-success">Evidence</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">View Evidence</button>
+                                <button class="btn btn-sm btn-outline-secondary mark-read" data-id="3">Mark as Read</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">System Maintenance Complete</h6>
+                            <small>2 days ago</small>
+                        </div>
+                        <p class="mb-1">The scheduled system maintenance has been completed successfully. All systems are operational.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-secondary">System</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary mark-unread" data-id="4">Mark as Unread</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Prisoner Release Alert</h6>
+                            <small>3 days ago</small>
+                        </div>
+                        <p class="mb-1">Prisoner James Wilson (ID: P10045) is scheduled for release in 7 days (2023-06-15).</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-warning">Prisoner Release</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                <button class="btn btn-sm btn-outline-secondary mark-unread" data-id="5">Mark as Unread</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Case Closed</h6>
+                            <small>5 days ago</small>
+                        </div>
+                        <p class="mb-1">Case #C-2023-002 (Vandalism at City Hall) has been closed by Detective Jones.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-success">Case Closure</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">View Case</button>
+                                <button class="btn btn-sm btn-outline-secondary mark-unread" data-id="6">Mark as Unread</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Report Generated</h6>
+                            <small>1 week ago</small>
+                        </div>
+                        <p class="mb-1">Your requested report "Monthly Case Summary - May 2023" has been generated and is ready for download.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-info">Report</small>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary">Download</button>
+                                <button class="btn btn-sm btn-outline-secondary mark-unread" data-id="7">Mark as Unread</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="unread" role="tabpanel" aria-labelledby="unread-tab">
+                <!-- Unread notifications would be displayed here -->
+                <p class="text-muted text-center my-5">Loading unread notifications...</p>
+            </div>
+            
+            <div class="tab-pane fade" id="cases" role="tabpanel" aria-labelledby="cases-tab">
+                <!-- Case-related notifications would be displayed here -->
+                <p class="text-muted text-center my-5">Loading case notifications...</p>
+            </div>
+            
+            <div class="tab-pane fade" id="system" role="tabpanel" aria-labelledby="system-tab">
+                <!-- System notifications would be displayed here -->
+                <p class="text-muted text-center my-5">Loading system notifications...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Settings Modal -->
+<div class="modal fade" id="notificationSettingsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Notification Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="d-block font-weight-bold mb-3">Notification Types</label>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="caseAssignments" checked>
+                        <label class="custom-control-label" for="caseAssignments">Case Assignments</label>
+                    </div>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="caseUpdates" checked>
+                        <label class="custom-control-label" for="caseUpdates">Case Updates</label>
+                    </div>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="evidenceChanges" checked>
+                        <label class="custom-control-label" for="evidenceChanges">Evidence Changes</label>
+                    </div>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="prisonerReleases" checked>
+                        <label class="custom-control-label" for="prisonerReleases">Prisoner Releases</label>
+                    </div>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="systemNotices" checked>
+                        <label class="custom-control-label" for="systemNotices">System Notices</label>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-4">
+                    <label class="d-block font-weight-bold mb-3">Email Notifications</label>
+                    <div class="custom-control custom-switch mb-2">
+                        <input type="checkbox" class="custom-control-input" id="emailEnabled" checked>
+                        <label class="custom-control-label" for="emailEnabled">Enable Email Notifications</label>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="emailDigest">Email Digest Frequency</label>
+                        <select class="form-control" id="emailDigest">
+                            <option value="immediate">Immediate</option>
+                            <option value="hourly">Hourly Digest</option>
+                            <option value="daily" selected>Daily Digest</option>
+                            <option value="weekly">Weekly Digest</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveNotificationSettings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Style for unread notifications
+        $('.unread').css('background-color', 'rgba(13, 110, 253, 0.05)');
+        $('.unread h6').css('font-weight', 'bold');
+        
+        // Mark as read functionality
+        $('.mark-read').on('click', function() {
+            var id = $(this).data('id');
+            var listItem = $(this).closest('.list-group-item');
+            
+            // Remove unread styling
+            listItem.removeClass('unread');
+            listItem.find('h6').css('font-weight', 'normal');
+            listItem.css('background-color', '');
+            
+            // Change the button to "Mark as Unread"
+            $(this).text('Mark as Unread').removeClass('mark-read').addClass('mark-unread');
+            
+            // In a real app, you'd make an AJAX call to update the server
+            console.log('Marking notification ' + id + ' as read');
+        });
+        
+        // Mark as unread functionality
+        $('.mark-unread').on('click', function() {
+            var id = $(this).data('id');
+            var listItem = $(this).closest('.list-group-item');
+            
+            // Add unread styling
+            listItem.addClass('unread');
+            listItem.find('h6').css('font-weight', 'bold');
+            listItem.css('background-color', 'rgba(13, 110, 253, 0.05)');
+            
+            // Change the button to "Mark as Read"
+            $(this).text('Mark as Read').removeClass('mark-unread').addClass('mark-read');
+            
+            // In a real app, you'd make an AJAX call to update the server
+            console.log('Marking notification ' + id + ' as unread');
+        });
+        
+        // Mark all as read
+        $('#markAllRead').on('click', function() {
+            $('.unread').removeClass('unread').css('background-color', '');
+            $('.list-group-item h6').css('font-weight', 'normal');
+            $('.mark-read').text('Mark as Unread').removeClass('mark-read').addClass('mark-unread');
+            
+            // Update badge counts
+            $('#unread-tab .badge').text('0');
+            
+            // In a real app, you'd make an AJAX call to update the server
+            alert('All notifications marked as read');
+        });
+        
+        // Save notification settings
+        $('#saveNotificationSettings').on('click', function() {
+            // In a real app, you'd gather all the settings and send to the server
+            alert('Notification preferences saved successfully');
+            $('#notificationSettingsModal').modal('hide');
+        });
+    });
+</script>
+{% endblock %}
