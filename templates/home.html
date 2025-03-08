@@ -1,0 +1,503 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Police Management System{% endblock %}
+
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Command Center Dashboard</h2>
+    <div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download mr-2"></i>Export Report
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center">
+                <div class="icon-bg bg-blue mr-3">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <div>
+                    <div class="stat-card-header">Total Cases</div>
+                    <h3 class="stat-card-number">142</h3>
+                </div>
+            </div>
+            <div class="mt-3 d-flex align-items-center">
+                <span class="trend-indicator trend-up">
+                    <i class="fas fa-arrow-up mr-1"></i>12%
+                </span>
+                <span class="ml-2 text-muted">Since last month</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center">
+                <div class="icon-bg bg-green mr-3">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div>
+                    <div class="stat-card-header">Solved Cases</div>
+                    <h3 class="stat-card-number">78</h3>
+                </div>
+            </div>
+            <div class="mt-3 d-flex align-items-center">
+                <span class="trend-indicator trend-up">
+                    <i class="fas fa-arrow-up mr-1"></i>8%
+                </span>
+                <span class="ml-2 text-muted">Since last month</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center">
+                <div class="icon-bg bg-yellow mr-3">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div>
+                    <div class="stat-card-header">Pending Cases</div>
+                    <h3 class="stat-card-number">64</h3>
+                </div>
+            </div>
+            <div class="mt-3 d-flex align-items-center">
+                <span class="trend-indicator trend-down">
+                    <i class="fas fa-arrow-down mr-1"></i>3%
+                </span>
+                <span class="ml-2 text-muted">Since last month</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center">
+                <div class="icon-bg bg-red mr-3">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div>
+                    <div class="stat-card-header">Critical Cases</div>
+                    <h3 class="stat-card-number">12</h3>
+                </div>
+            </div>
+            <div class="mt-3 d-flex align-items-center">
+                <span class="trend-indicator trend-up">
+                    <i class="fas fa-arrow-up mr-1"></i>15%
+                </span>
+                <span class="ml-2 text-muted">Since last month</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-8">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="mb-0">Case Statistics</h5>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-light" id="daily-btn">Daily</button>
+                    <button type="button" class="btn btn-primary" id="weekly-btn">Weekly</button>
+                    <button type="button" class="btn btn-light" id="monthly-btn">Monthly</button>
+                </div>
+            </div>
+            <div class="content-card-body">
+                <canvas id="caseChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="mb-0">Case Distribution</h5>
+            </div>
+            <div class="content-card-body">
+                <canvas id="distributionChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-6">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="mb-0">Recent Cases</h5>
+                <a href="{{ url_for('cases') }}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="content-card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Case #</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>C-2023-005</td>
+                                <td>Burglary at Smith Residence</td>
+                                <td>May 1, 2023</td>
+                                <td><span class="badge badge-warning">Open</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-outline-success"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C-2023-004</td>
+                                <td>Traffic Accident on Oak Avenue</td>
+                                <td>Apr 5, 2023</td>
+                                <td><span class="badge badge-success">Closed</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-outline-success"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C-2023-003</td>
+                                <td>Assault on Elm Street</td>
+                                <td>Mar 10, 2023</td>
+                                <td><span class="badge badge-warning">Open</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-outline-success"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C-2023-002</td>
+                                <td>Vandalism at City Hall</td>
+                                <td>Feb 20, 2023</td>
+                                <td><span class="badge badge-success">Closed</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-outline-success"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>C-2023-001</td>
+                                <td>Theft at First Bank</td>
+                                <td>Jan 15, 2023</td>
+                                <td><span class="badge badge-warning">Open</span></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button type="button" class="btn btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-outline-success"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="mb-0">Activity Timeline</h5>
+            </div>
+            <div class="content-card-body">
+                <div class="activity-item">
+                    <div class="activity-time">2 hours ago</div>
+                    <div><strong>Officer Emily Brown</strong> added new evidence to case <strong>C-2023-005</strong></div>
+                    <div class="mt-1 text-muted small">Fingerprint evidence collected from the kitchen window</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">4 hours ago</div>
+                    <div><strong>Detective John Doe</strong> updated status of case <strong>C-2023-003</strong> to <span class="badge badge-warning">In Progress</span></div>
+                    <div class="mt-1 text-muted small">New witness has come forward with additional information</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">Yesterday, 15:30</div>
+                    <div><strong>Sergeant Jane Smith</strong> closed case <strong>C-2023-004</strong></div>
+                    <div class="mt-1 text-muted small">All parties reached an agreement, case documentation completed</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">Yesterday, 10:15</div>
+                    <div><strong>Officer Robert Jones</strong> added new suspect to case <strong>C-2023-005</strong></div>
+                    <div class="mt-1 text-muted small">Suspect identified from security camera footage</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">May 2, 2023</div>
+                    <div><strong>Detective Michael Davis</strong> created new case <strong>C-2023-005</strong></div>
+                    <div class="mt-1 text-muted small">Initial report filed, evidence collection in progress</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="mb-0">Officer Assignments</h5>
+            </div>
+            <div class="content-card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Officer</th>
+                                <th>Badge #</th>
+                                <th>Assigned Cases</th>
+                                <th>Case Load</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2 user-avatar">JD</div>
+                                        John Doe
+                                    </div>
+                                </td>
+                                <td>PD123</td>
+                                <td>3</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-success" style="width: 60%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">Available</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Assign Case</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2 user-avatar">JS</div>
+                                        Jane Smith
+                                    </div>
+                                </td>
+                                <td>PD456</td>
+                                <td>5</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-warning" style="width: 85%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-warning">Busy</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Assign Case</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2 user-avatar">RJ</div>
+                                        Robert Jones
+                                    </div>
+                                </td>
+                                <td>PD789</td>
+                                <td>2</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-success" style="width: 40%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">Available</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Assign Case</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2 user-avatar">EB</div>
+                                        Emily Brown
+                                    </div>
+                                </td>
+                                <td>PD012</td>
+                                <td>1</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-success" style="width: 20%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-success">Available</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Assign Case</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2 user-avatar">MD</div>
+                                        Michael Davis
+                                    </div>
+                                </td>
+                                <td>PD345</td>
+                                <td>4</td>
+                                <td>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-warning" style="width: 70%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-warning">Busy</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Assign Case</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Case statistics chart
+        var ctxCases = document.getElementById('caseChart').getContext('2d');
+        var caseChart = new Chart(ctxCases, {
+            type: 'line',
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                datasets: [
+                    {
+                        label: 'New Cases',
+                        data: [5, 8, 7, 12, 6, 3, 9],
+                        backgroundColor: 'rgba(12, 107, 161, 0.1)',
+                        borderColor: '#0C6BA1',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#0C6BA1',
+                        pointRadius: 4,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Closed Cases',
+                        data: [3, 5, 4, 7, 9, 2, 6],
+                        backgroundColor: 'rgba(35, 206, 107, 0.1)',
+                        borderColor: '#23CE6B',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#23CE6B',
+                        pointRadius: 4,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+        
+        // Case distribution chart
+        var ctxDistribution = document.getElementById('distributionChart').getContext('2d');
+        var distributionChart = new Chart(ctxDistribution, {
+            type: 'doughnut',
+            data: {
+                labels: ['Theft', 'Assault', 'Vandalism', 'Traffic', 'Other'],
+                datasets: [{
+                    data: [35, 25, 18, 15, 7],
+                    backgroundColor: [
+                        '#0C6BA1',
+                        '#23CE6B',
+                        '#F9C74F',
+                        '#E63946',
+                        '#4C6CAD'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+        
+        // Toggle between daily, weekly, and monthly data
+        document.getElementById('daily-btn').addEventListener('click', function() {
+            this.classList.add('btn-primary');
+            this.classList.remove('btn-light');
+            document.getElementById('weekly-btn').classList.remove('btn-primary');
+            document.getElementById('weekly-btn').classList.add('btn-light');
+            document.getElementById('monthly-btn').classList.remove('btn-primary');
+            document.getElementById('monthly-btn').classList.add('btn-light');
+            
+            // Update chart data for daily view
+            caseChart.data.labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            caseChart.data.datasets[0].data = [5, 8, 7, 12, 6, 3, 9];
+            caseChart.data.datasets[1].data = [3, 5, 4, 7, 9, 2, 6];
+            caseChart.update();
+        });
+        
+        document.getElementById('weekly-btn').addEventListener('click', function() {
+            this.classList.add('btn-primary');
+            this.classList.remove('btn-light');
+            document.getElementById('daily-btn').classList.remove('btn-primary');
+            document.getElementById('daily-btn').classList.add('btn-light');
+            document.getElementById('monthly-btn').classList.remove('btn-primary');
+            document.getElementById('monthly-btn').classList.add('btn-light');
+            
+            // Update chart data for weekly view
+            caseChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+            caseChart.data.datasets[0].data = [42, 35, 47, 50];
+            caseChart.data.datasets[1].data = [30, 28, 35, 36];
+            caseChart.update();
+        });
+        
+        document.getElementById('monthly-btn').addEventListener('click', function() {
+            this.classList.add('btn-primary');
+            this.classList.remove('btn-light');
+            document.getElementById('daily-btn').classList.remove('btn-primary');
+            document.getElementById('daily-btn').classList.add('btn-light');
+            document.getElementById('weekly-btn').classList.remove('btn-primary');
+            document.getElementById('weekly-btn').classList.add('btn-light');
+            
+            // Update chart data for monthly view
+            caseChart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+            caseChart.data.datasets[0].data = [125, 132, 145, 170, 155, 142];
+            caseChart.data.datasets[1].data = [110, 118, 130, 125, 140, 135];
+            caseChart.update();
+        });
+    });
+</script>
+{% endblock %}

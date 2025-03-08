@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}Statistics - Police Management System{% endblock %}
+
+{% block nav_reports %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-chart-bar mr-2"></i>Department Statistics</h2>
+    <div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download mr-2"></i>Export Report
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Cases</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_cases }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-folder fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Closed Cases</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ closed_cases }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Open Cases</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_cases }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clock fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Case Closure Rate</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                    {{ (closed_cases / total_cases * 100)|round|int if total_cases > 0 else 0 }}%
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" 
+                                        style="width: {{ (closed_cases / total_cases * 100)|round|int if total_cases > 0 else 0 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-percent fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Case Types Distribution</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="caseTypePieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Department Overview</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h4 class="small font-weight-bold">Officers <span class="float-right">{{ total_officers }}</span></h4>
+                </div>
+                <div class="mb-4">
+                    <h4 class="small font-weight-bold">Suspects <span class="float-right">{{ total_suspects }}</span></h4>
+                </div>
+                <div class="mb-4">
+                    <h4 class="small font-weight-bold">Evidence Items <span class="float-right">{{ total_evidence }}</span></h4>
+                </div>
+                <div class="mb-4">
+                    <h4 class="small font-weight-bold">Cases per Officer <span class="float-right">{{ (total_cases / total_officers)|round(1) if total_officers > 0 else 0 }}</span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Case Distribution by Type</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Case Type</th>
+                                <th>Number of Cases</th>
+                                <th>Percentage</th>
+                                <th>Distribution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for case_type in case_types %}
+                            <tr>
+                                <td>{{ case_type.CaseType }}</td>
+                                <td>{{ case_type.Count }}</td>
+                                <td>{{ (case_type.Count / total_cases * 100)|round|int }}%</td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ (case_type.Count / total_cases * 100)|round|int }}%"
+                                            aria-valuenow="{{ (case_type.Count / total_cases * 100)|round|int }}" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Set new default font family and font color to mimic Bootstrap's default styling
+    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#858796';
+
+    // Pie Chart
+    var ctx = document.getElementById("caseTypePieChart");
+    var caseTypePieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                {% for case_type in case_types %}
+                "{{ case_type.CaseType }}",
+                {% endfor %}
+            ],
+            datasets: [{
+                data: [
+                    {% for case_type in case_types %}
+                    {{ case_type.Count }},
+                    {% endfor %}
+                ],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796', '#5a5c69'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#60616f', '#373840'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: true,
+                position: 'bottom'
+            },
+            cutoutPercentage: 65,
+        },
+    });
+</script>
+{% endblock %}

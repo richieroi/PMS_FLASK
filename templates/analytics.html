@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics - Police Management System{% endblock %}
+
+{% block nav_analytics %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-chart-line mr-2"></i>Analytics Dashboard</h2>
+    <div>
+        <button class="btn btn-primary">
+            <i class="fas fa-download mr-2"></i>Export Data
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Case Trends (Last 6 Months)</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">View Options:</div>
+                        <a class="dropdown-item" href="#" id="viewLineChart">Line Chart</a>
+                        <a class="dropdown-item" href="#" id="viewBarChart">Bar Chart</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" id="viewAll">All Data</a>
+                        <a class="dropdown-item" href="#" id="viewLastMonth">Last Month</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="casesTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Officer Performance Analysis</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Officer</th>
+                                <th>Cases</th>
+                                <th>Closed Cases</th>
+                                <th>Closure Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for officer in officer_performance %}
+                            <tr>
+                                <td>{{ officer.FirstName }} {{ officer.LastName }}</td>
+                                <td>{{ officer.CaseCount }}</td>
+                                <td>{{ officer.ClosedCases }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="progress flex-grow-1 mr-2" style="height: 8px;">
+                                            <div class="progress-bar bg-success" role="progressbar" 
+                                                style="width: {{ (officer.ClosedCases / officer.CaseCount * 100)|round|int if officer.CaseCount > 0 else 0 }}%">
+                                            </div>
+                                        </div>
+                                        <span>{{ (officer.ClosedCases / officer.CaseCount * 100)|round|int if officer.CaseCount > 0 else 0 }}%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Performance Metrics</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Data Analysis Tools</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center py-4">
+                                <div class="icon mb-3">
+                                    <i class="fas fa-calendar-alt fa-3x text-primary"></i>
+                                </div>
+                                <h5 class="card-title">Time Series Analysis</h5>
+                                <p class="card-text">Analyze trends over time with advanced filters.</p>
+                                <button class="btn btn-primary btn-sm mt-2">Launch Tool</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center py-4">
+                                <div class="icon mb-3">
+                                    <i class="fas fa-map-marked-alt fa-3x text-success"></i>
+                                </div>
+                                <h5 class="card-title">Geographic Distribution</h5>
+                                <p class="card-text">Analyze crime patterns by location.</p>
+                                <button class="btn btn-success btn-sm mt-2">Launch Tool</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card bg-light">
+                            <div class="card-body text-center py-4">
+                                <div class="icon mb-3">
+                                    <i class="fas fa-user-friends fa-3x text-warning"></i>
+                                </div>
+                                <h5 class="card-title">Demographic Analysis</h5>
+                                <p class="card-text">Study patterns across different demographics.</p>
+                                <button class="btn btn-warning btn-sm mt-2">Launch Tool</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Area Chart for case trends
+    var ctx = document.getElementById("casesTrendChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                {% for month_data in monthly_cases %}
+                "{{ month_data.Month }}/{{ month_data.Year }}",
+                {% endfor %}
+            ],
+            datasets: [{
+                label: "Cases",
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: [
+                    {% for month_data in monthly_cases %}
+                    {{ month_data.CaseCount }},
+                    {% endfor %}
+                ],
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+            },
+            scales: {
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        maxTicksLimit: 5,
+                        padding: 10,
+                        precision: 0
+                    },
+                    gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                intersect: false,
+                mode: 'index',
+                caretPadding: 10
+            }
+        }
+    });
+
+    // Performance chart
+    var ctxPerformance = document.getElementById("performanceChart");
+    var performanceChart = new Chart(ctxPerformance, {
+        type: 'bar',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [{
+                label: "Case Resolution Time (days)",
+                backgroundColor: "#4e73df",
+                hoverBackgroundColor: "#2e59d9",
+                borderColor: "#4e73df",
+                data: [15, 14, 13, 12, 11, 10],
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    maxBarThickness: 25,
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        maxTicksLimit: 5,
+                        padding: 10
+                    },
+                    gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10
+            },
+        }
+    });
+    
+    // Toggle view options
+    document.getElementById('viewLineChart').addEventListener('click', function(e) {
+        e.preventDefault();
+        myLineChart.config.type = 'line';
+        myLineChart.update();
+    });
+    
+    document.getElementById('viewBarChart').addEventListener('click', function(e) {
+        e.preventDefault();
+        myLineChart.config.type = 'bar';
+        myLineChart.update();
+    });
+</script>
+{% endblock %}

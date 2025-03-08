@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Management System 225</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        :root {
+            --blue-dark: #0A2342;
+            --blue-medium: #1D3461;
+            --blue-light: #2A4D7F;
+            --accent-blue: #0C6BA1;
+            --accent-green: #23CE6B;
+            --accent-red: #E63946;
+            --accent-yellow: #F9C74F;
+            --white: #F0F4F8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Header/Hero Section */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-medium) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-image: url('https://images.unsplash.com/photo-1555955207-b96159c24d7f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.07;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            color: var(--white);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .btn-primary {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            padding: 12px 30px;
+            font-weight: 500;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--blue-light);
+            border-color: var(--blue-light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .hero-badge {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero-badge i {
+            font-size: 180px;
+            color: rgba(255,255,255,0.2);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 20px;
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+        
+        .feature-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #f5f5f5;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--accent-green);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: bottom;
+        }
+        
+        .feature-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--blue-light);
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--blue-dark);
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, var(--blue-medium) 0%, var(--blue-dark) 100%);
+            padding: 80px 0;
+            color: #fff;
+        }
+        
+        .counter {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: #f9f9f9;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--blue-dark);
+        }
+        
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            color: #666;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--blue-dark);
+            padding: 60px 0 30px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        footer h4 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        footer ul li {
+            margin-bottom: 10px;
+        }
+        
+        footer ul li a {
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+        }
+        
+        footer ul li a:hover {
+            color: var(--accent-green);
+            text-decoration: none;
+            padding-left: 5px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent-green);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(15px); }
+            100% { transform: translateY(-50%) translateX(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-badge {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="hero-title">Police Management System</h1>
+                    <p class="hero-subtitle">A comprehensive solution for modern law enforcement agencies to securely manage cases, evidence, and personnel data.</p>
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shield-alt mr-2"></i> Enter System
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-badge">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>System Features</h2>
+                <p>Our comprehensive police management system delivers powerful tools for effective law enforcement operations and data management.</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <h3>Case Management</h3>
+                        <p>Efficiently track and manage case details with comprehensive reporting tools and status updates.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h3>Evidence Tracking</h3>
+                        <p>Securely log and monitor all evidence with detailed chain of custody and storage information.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Officer Management</h3>
+                        <p>Track officer assignments, schedules, performance metrics and professional development.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Analytics & Reports</h3>
+                        <p>Generate insightful statistics and reports for data-driven decision making and resource allocation.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Secure Access Control</h3>
+                        <p>Role-based security ensures sensitive information is only accessible to authorized personnel.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Data Integration</h3>
+                        <p>Seamlessly connect with other law enforcement databases and information systems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="counter">5000+</div>
+                    <div class="stat-label">Cases Managed</div>
+                </div>
+                
+                <div class="col-md-3 col-6">
+                    <div class="counter">500+</div>
+                    <div class="stat-label">Active Officers</div>
+                </div>
+                
+                <div class="col-md-3 col-6">
+                    <div class="counter">99.9%</div>
+                    <div class="stat-label">System Uptime</div>
+                </div>
+                
+                <div class="col-md-3 col-6">
+                    <div class="counter">25+</</div>
+                    <div class="stat-label">Departments</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Enhance Your Department?</h2>
+            <p>Our police management system provides the tools needed for modern law enforcement agencies to operate efficiently and securely.</p>
+            <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-sign-in-alt mr-2"></i> Login to System
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>About PMS</h4>
+                    <p>The Police Management System provides comprehensive tools for law enforcement agencies to manage cases, evidence, and personnel.</p>
+                    <div class="social-links mt-3">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-md-2">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-2">
+                    <h4>Help</h4>
+                    <ul>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-4">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> 123 Police Plaza, City, State</p>
+                    <p><i class="fas fa-phone mr-2"></i> (123) 456-7890</p>
+                    <p><i class="fas fa-envelope mr-2"></i> info@policemanagement.gov</p>
+                </div>
+            </div>
+            
+            <div class="copyright text-center">
+                &copy; 2023 Police Management System. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

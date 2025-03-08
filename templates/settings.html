@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings - Police Management System{% endblock %}
+
+{% block nav_settings %}active{% endblock %}
+
+{% block content %}
+<div class="content-card mb-4">
+    <div class="content-card-header">
+        <h2><i class="fas fa-cog mr-2"></i>Settings</h2>
+    </div>
+    <div class="content-card-body">
+        {% if error %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success">
+                {{ success }}
+            </div>
+        {% endif %}
+
+        <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true">Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="preferences-tab" data-toggle="tab" href="#preferences" role="tab" aria-controls="preferences" aria-selected="false">Preferences</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications" role="tab" aria-controls="notifications" aria-selected="false">Notifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security" aria-selected="false">Security</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-4" id="settingsTabsContent">
+            <!-- Account Settings -->
+            <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle" alt="Profile Picture">
+                            </div>
+                            <button class="btn btn-sm btn-primary">Change Photo</button>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <form method="post">
+                            <input type="hidden" name="action" value="update_profile">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" name="first_name" value="{{ session.get('first_name', '') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" name="last_name" value="{{ session.get('last_name', '') }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ session.get('email', '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="{{ session.get('phone', '') }}">
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences Settings -->
+            <div class="tab-pane fade" id="preferences" role="tabpanel" aria-labelledby="preferences-tab">
+                <form method="post">
+                    <input type="hidden" name="action" value="update_preferences">
+                    <div class="form-group">
+                        <label for="theme">Theme</label>
+                        <select class="form-control" id="theme" name="theme">
+                            <option value="light" {% if session.get('theme') == 'light' %}selected{% endif %}>Light</option>
+                            <option value="dark" {% if session.get('theme') == 'dark' %}selected{% endif %}>Dark</option>
+                            <option value="system" {% if session.get('theme') == 'system' %}selected{% endif %}>System Default</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <select class="form-control" id="language" name="language">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeFormat">Time Format</label>
+                        <select class="form-control" id="timeFormat" name="time_format">
+                            <option value="12">12-hour (1:00 PM)</option>
+                            <option value="24">24-hour (13:00)</option>
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Notifications Settings -->
+            <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                <form method="post">
+                    <input type="hidden" name="action" value="update_notifications">
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="emailNotifications" name="email_notifications" checked>
+                            <label class="custom-control-label" for="emailNotifications">Email Notifications</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="caseUpdates" name="case_updates" checked>
+                            <label class="custom-control-label" for="caseUpdates">Case Updates</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="releaseAlerts" name="release_alerts" checked>
+                            <label class="custom-control-label" for="releaseAlerts">Prisoner Release Alerts</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="systemAnnouncements" name="system_announcements">
+                            <label class="custom-control-label" for="systemAnnouncements">System Announcements</label>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <h5 class="mb-3">Change Password</h5>
+                <form method="post">
+                    <input type="hidden" name="action" value="change_password">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword" name="current_password">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="new_password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirm_password">
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <h5 class="mb-3">Two-Factor Authentication</h5>
+                <p>Enable two-factor authentication for enhanced security.</p>
+                <button class="btn btn-outline-primary">Enable 2FA</button>
+                
+                <hr class="my-4">
+                
+                <h5 class="mb-3">Session Management</h5>
+                <p>You're currently logged in from:</p>
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Windows 10 - Chrome</h6>
+                            <small>Current Session</small>
+                        </div>
+                        <p class="mb-1">IP Address: 192.168.1.1</p>
+                        <small class="text-muted">Last Active: Just now</small>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-danger">Log Out All Other Sessions</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

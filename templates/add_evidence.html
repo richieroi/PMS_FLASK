@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Evidence - Police Management System{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header">
+        <h2><i class="fas fa-plus mr-2"></i>Add New Evidence</h2>
+    </div>
+    <div class="content-card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="case_id">Associated Case</label>
+                        <select class="form-control" id="case_id" name="case_id" required>
+                            <option value="">Select a case</option>
+                            {% for case in cases %}
+                            <option value="{{ case[0] }}">{{ case[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="custodian_officer_id">Custodian Officer</label>
+                        <select class="form-control" id="custodian_officer_id" name="custodian_officer_id" required>
+                            <option value="">Select an officer</option>
+                            {% for officer in officers %}
+                            <option value="{{ officer[0] }}">{{ officer[1] }} {{ officer[2] }} ({{ officer[3] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Evidence Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date_collected">Date Collected</label>
+                        <input type="date" class="form-control" id="date_collected" name="date_collected" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="location_collected">Location Collected</label>
+                        <input type="text" class="form-control" id="location_collected" name="location_collected" placeholder="e.g., 123 Main St, Apt 4B" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="evidence_type">Type of Evidence</label>
+                <select class="form-control" id="evidence_type" name="evidence_type">
+                    <option>Physical</option>
+                    <option>Digital</option>
+                    <option>Biological</option>
+                    <option>Documentary</option>
+                    <option>Testimonial</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="storage_location">Storage Location</label>
+                <input type="text" class="form-control" id="storage_location" name="storage_location" placeholder="e.g., Evidence Room B, Shelf 3">
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Add Evidence</button>
+                <a href="{{ url_for('evidence') }}" class="btn btn-secondary ml-2"><i class="fas fa-times mr-1"></i> Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

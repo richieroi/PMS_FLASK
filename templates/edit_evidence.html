@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Evidence - Police Management System{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="content-card-header">
+        <h2><i class="fas fa-edit mr-2"></i>Edit Evidence</h2>
+    </div>
+    <div class="content-card-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="case_id">Associated Case</label>
+                        <select class="form-control" id="case_id" name="case_id" required>
+                            <option value="">Select a case</option>
+                            {% for case in cases %}
+                            <option value="{{ case[0] }}" {% if case[0] == evidence[1] %}selected{% endif %}>{{ case[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="custodian_officer_id">Custodian Officer</label>
+                        <select class="form-control" id="custodian_officer_id" name="custodian_officer_id" required>
+                            <option value="">Select an officer</option>
+                            {% for officer in officers %}
+                            <option value="{{ officer[0] }}" {% if officer[0] == evidence[5] %}selected{% endif %}>{{ officer[1] }} {{ officer[2] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Evidence Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required>{{ evidence[2] }}</textarea>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date_collected">Date Collected</label>
+                        <input type="date" class="form-control" id="date_collected" name="date_collected" value="{{ evidence[3] }}" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="location_collected">Location Collected</label>
+                        <input type="text" class="form-control" id="location_collected" name="location_collected" value="{{ evidence[4] }}" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Update Evidence</button>
+                <a href="{{ url_for('evidence') }}" class="btn btn-secondary ml-2"><i class="fas fa-times mr-1"></i> Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

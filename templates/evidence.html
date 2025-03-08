@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Evidence - Police Management System{% endblock %}
+
+{% block nav_evidence %}active{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2><i class="fas fa-fingerprint mr-2"></i>Evidence</h2>
+        <a href="{{ url_for('add_evidence') }}" class="btn btn-primary">
+            <i class="fas fa-plus mr-1"></i> Add New Evidence
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Evidence ID</th>
+                        <th>Case ID</th>
+                        <th>Description</th>
+                        <th>Date Collected</th>
+                        <th>Location Collected</th>
+                        <th>Custodian Officer ID</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evidence_item in evidence %}
+                        <tr>
+                            <td>{{ evidence_item[0] }}</td>
+                            <td>{{ evidence_item[1] }}</td>
+                            <td>{{ evidence_item[2] }}</td>
+                            <td>{{ evidence_item[3] }}</td>
+                            <td>{{ evidence_item[4] }}</td>
+                            <td>{{ evidence_item[5] }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="#" class="btn btn-outline-primary" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ url_for('edit_evidence', evidence_id=evidence_item[0]) }}" class="btn btn-outline-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-outline-danger" title="Delete" 
+                                            data-toggle="modal" data-target="#deleteEvidenceModal" 
+                                            data-id="{{ evidence_item[0] }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteEvidenceModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this evidence item? This action cannot be undone.</p>
+                <p class="text-danger"><strong>Evidence ID: <span id="deleteEvidenceId"></span></strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="deleteEvidenceForm" method="post" action="">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('#deleteEvidenceModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var evidenceId = button.data('id');
+        var modal = $(this);
+        
+        modal.find('#deleteEvidenceId').text(evidenceId);
+        modal.find('#deleteEvidenceForm').attr('action', '/delete_evidence/' + evidenceId);
+    });
+</script>
+{% endblock %}
